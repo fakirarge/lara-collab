@@ -11,11 +11,13 @@ use App\Events\Task\TaskRestored;
 use App\Events\Task\TaskUpdated;
 use App\Http\Requests\Task\StoreTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
+use App\Http\Resources\TaskPriorityResource;
 use App\Models\Label;
 use App\Models\OwnerCompany;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\TaskGroup;
+use App\Models\TaskPriority;
 use App\Services\PermissionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -39,6 +41,8 @@ class TaskController extends Controller
             ->with(['project' => fn ($query) => $query->withArchived()])
             ->get()
             ->mapWithKeys(function (TaskGroup $group) use ($request, $project) {
+                $prioritySort = data_get($request->input('sort', []), 'priority');
+
                 return [
                     $group->id => Task::where('project_id', $project->id)
                         ->where('group_id', $group->id)
@@ -49,6 +53,18 @@ class TaskController extends Controller
                         ->when(! $request->has('status'), fn ($query) => $query->whereNull('completed_at'))
                         ->withDefault()
                         ->when($project->isArchived(), fn ($query) => $query->with(['project' => fn ($query) => $query->withArchived()]))
+                        ->when($prioritySort, function ($query, $direction) {
+                            $direction = $direction === 'asc' ? 'asc' : 'desc';
+
+                            $query
+                                ->leftJoin('task_priorities', 'tasks.priority_id', '=', 'task_priorities.id')
+                                ->orderByRaw('tasks.priority_id IS NULL')
+                                ->orderBy('task_priorities.order', $direction)
+                                ->orderByDesc('tasks.created_at')
+                                ->select('tasks.*');
+                        }, function ($query) {
+                            $query->orderByDesc('created_at');
+                        })
                         ->get(),
                 ];
             });
@@ -57,6 +73,7 @@ class TaskController extends Controller
             'project' => $project,
             'usersWithAccessToProject' => PermissionService::usersWithAccessToProject($project),
             'labels' => Label::get(['id', 'name', 'color']),
+            'priorities' => TaskPriorityResource::collection(TaskPriority::orderBy('order')->get()),
             'taskGroups' => $groups,
             'groupedTasks' => $groupedTasks,
             'openedTask' => $task ? $task->loadDefault() : null,

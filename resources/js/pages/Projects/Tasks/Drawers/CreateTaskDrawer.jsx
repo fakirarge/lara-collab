@@ -20,6 +20,7 @@ import {
 import { DateInput } from '@mantine/dates';
 import { useEffect } from 'react';
 import LabelsDropdown from './LabelsDropdown';
+import PriorityDropdown from './PriorityDropdown';
 import classes from './css/TaskDrawer.module.css';
 import { PricingType } from '@/utils/enums';
 
@@ -41,6 +42,7 @@ export function CreateTaskDrawer() {
     description: '',
     pricing_type: project?.default_pricing_type || PricingType.HOURLY,
     estimation: '',
+    priority_id: null,
     fixed_price: '',
     due_on: '',
     hidden_from_clients: false,
@@ -242,6 +244,13 @@ export function CreateTaskDrawer() {
             suffix=' hours'
             onChange={value => updateValue('estimation', value)}
           />
+
+          <PriorityDropdown
+            value={form.data.priority_id}
+            onChange={value => updateValue('priority_id', value || null)}
+            mt='md'
+          />
+
 
           <Select
             label='Pricing type'

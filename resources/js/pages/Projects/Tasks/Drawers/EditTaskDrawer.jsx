@@ -23,6 +23,7 @@ import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 import Comments from './Comments';
 import LabelsDropdown from './LabelsDropdown';
+import PriorityDropdown from './PriorityDropdown';
 import Timer from './Timer';
 import classes from './css/TaskDrawer.module.css';
 import { PricingType } from '@/utils/enums';
@@ -37,6 +38,7 @@ export function EditTaskDrawer() {
     usersWithAccessToProject,
     taskGroups,
     labels,
+    priorities,
     openedTask,
     currency,
     auth: { user },
@@ -55,6 +57,7 @@ export function EditTaskDrawer() {
     description: '',
     pricing_type: PricingType.HOURLY,
     estimation: 0,
+    priority_id: '',
     fixed_price: 0,
     due_on: '',
     hidden_from_clients: false,
@@ -78,6 +81,7 @@ export function EditTaskDrawer() {
         description: task?.description || '',
         pricing_type: task?.pricing_type || PricingType.HOURLY,
         estimation: task?.estimation || 0,
+        priority_id: task?.priority_id || '',
         fixed_price: task?.fixed_price ? task.fixed_price / 100 : 0,
         due_on: task?.due_on ? dayjs(task?.due_on).toDate() : '',
         hidden_from_clients:
@@ -106,6 +110,9 @@ export function EditTaskDrawer() {
         ),
       };
       updateTaskProperty(task, field, value, options[field]);
+    } else if (field === 'priority_id') {
+      const priority = value ? priorities.find(p => p.id === value) : null;
+      updateTaskProperty(task, field, value, priority);
     } else if (!onBlurInputs.includes(field)) {
       updateTaskProperty(task, field, value);
     }
@@ -275,6 +282,14 @@ export function EditTaskDrawer() {
                 suffix=' hours'
                 onChange={value => updateValue('estimation', value)}
                 readOnly={!can('edit task')}
+              />
+
+              <PriorityDropdown
+                value={data.priority_id}
+                onChange={value => {
+                  updateValue('priority_id', value || null);
+                }}
+                mt='md'
               />
 
               <Select
