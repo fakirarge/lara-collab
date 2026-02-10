@@ -6,6 +6,7 @@ use App\Http\Controllers\Client\ClientCompanyController;
 use App\Http\Controllers\Client\ClientUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DropdownValuesController;
+use App\Http\Controllers\HealthCheckController;
 use App\Http\Controllers\Invoice\InvoiceTasksController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MyWork\ActivityController;
@@ -25,6 +26,9 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', 'dashboard');
+
+// Health check endpoint (no authentication required)
+Route::get('/health', HealthCheckController::class)->name('health');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     // Dashboard
@@ -77,6 +81,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
             Route::get('comment', [CommentController::class, 'index'])->name('comments');
             Route::post('comment', [CommentController::class, 'store'])->name('comments.store');
         })->scopeBindings();
+
+        // TASK HISTORY
+        Route::group(['prefix' => '{project}/tasks/{task}', 'as' => 'tasks.'], function () {
+            Route::get('history', [TaskHistoryController::class, 'index'])->name('history');
+            Route::get('history/timeline', [TaskHistoryController::class, 'timeline'])->name('history.timeline');
+        })->scopeBindings();
     });
 
     // My Work
@@ -97,6 +107,21 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Users
     Route::resource('users', UserController::class)->except(['show']);
     Route::post('users/{userId}/restore', [UserController::class, 'restore'])->name('users.restore');
+
+    // User Permissions (specific permission management)
+    Route::group(['prefix' => 'users/{user}/permissions', 'as' => 'users.permissions.'], function () {
+        Route::get('', [UserPermissionController::class, 'getOverrides'])->name('index');
+        Route::post('{permission}/grant', [UserPermissionController::class, 'grantPermission'])->name('grant');
+        Route::post('{permission}/deny', [UserPermissionController::class, 'denyPermission'])->name('deny');
+        Route::delete('{permission}/remove', [UserPermissionController::class, 'removeOverride'])->name('remove');
+        Route::post('roles/{role}/assign', [UserPermissionController::class, 'assignRole'])->name('roles.assign');
+        Route::delete('roles/{role}/remove', [UserPermissionController::class, 'removeRole'])->name('roles.remove');
+    })->scopeBindings();
+
+    // Bulk permission management
+    Route::post('permissions/bulk-update', [UserPermissionController::class, 'bulkUpdatePermissions'])->name('permissions.bulk-update');
+    Route::get('permissions/users/{permission}', [UserPermissionController::class, 'usersWithPermission'])->name('permissions.users');
+    Route::get('roles/users/{role}', [UserPermissionController::class, 'usersWithRole'])->name('roles.users');
 
     // Invoices
     Route::resource('invoices', InvoiceController::class)->except(['show']);

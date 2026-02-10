@@ -8,6 +8,7 @@ import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { forwardRef, useImperativeHandle } from "react";
 import suggestion from "./RichTextEditor/Mention/suggestion.js";
+import EmojiPicker from "./EmojiPicker/EmojiPicker";
 import classes from "./css/RichTextEditor.module.css";
 
 const RichTextEditor = forwardRef(function RichTextEditor(
@@ -41,6 +42,12 @@ const RichTextEditor = forwardRef(function RichTextEditor(
     },
   }));
 
+  const handleEmojiSelect = (emoji) => {
+    if (editor) {
+      editor.commands.insertContent(emoji);
+    }
+  };
+
   const computedColorScheme = useComputedColorScheme();
 
   return (
@@ -67,6 +74,10 @@ const RichTextEditor = forwardRef(function RichTextEditor(
         <Editor.ControlsGroup>
           <Editor.Code />
           <Editor.Blockquote />
+        </Editor.ControlsGroup>
+
+        <Editor.ControlsGroup>
+          {!readOnly && <EmojiPicker onSelect={handleEmojiSelect} />}
         </Editor.ControlsGroup>
       </Editor.Toolbar>
 

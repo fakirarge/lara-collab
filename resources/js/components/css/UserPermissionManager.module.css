@@ -1,0 +1,51 @@
+.permissionTable {
+  & th {
+    background-color: var(--mantine-color-gray-1);
+    font-weight: 600;
+  }
+
+  & tr:hover {
+    background-color: var(--mantine-color-gray-0);
+  }
+}
+
+.permissionBadge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+
+  &.granted {
+    background-color: var(--mantine-color-green-1);
+    color: var(--mantine-color-green-7);
+  }
+
+  &.denied {
+    background-color: var(--mantine-color-red-1);
+    color: var(--mantine-color-red-7);
+  }
+}
+
+.auditTrail {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid var(--mantine-color-gray-2);
+  border-radius: 4px;
+  padding: 12px;
+}
+
+.auditEntry {
+  padding: 8px;
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+  font-size: 14px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .permissionTable {
+    font-size: 12px;
+  }
+}
+

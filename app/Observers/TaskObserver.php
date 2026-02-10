@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Task;
+use Illuminate\Support\Facades\Cache;
 
 class TaskObserver
 {
@@ -17,6 +18,9 @@ class TaskObserver
             'title' => 'New task',
             'subtitle' => "\"{$task->name}\" was created by ".auth()->user()->name,
         ]);
+
+        // Clear caches
+        $this->clearCaches($task);
 
         if ($task->assigned_to_user_id !== null) {
             $task->assigned_at = now();
@@ -84,6 +88,25 @@ class TaskObserver
                 'subtitle' => "\"{$task->name}\" was set as ".($task->completed_at ? 'completed' : 'uncompleted').' by '.auth()->user()->name,
             ]);
         }
+
+        // Clear caches
+        $this->clearCaches($task);
+    }
+
+    /**
+     * Handle the Task "deleted" event.
+     */
+    public function deleted(Task $task): void
+    {
+        $task->activities()->create([
+            'project_id' => $task->project_id,
+            'user_id' => auth()->id(),
+            'title' => 'Task was deleted',
+            'subtitle' => "\"{$task->name}\" was deleted by ".auth()->user()->name,
+        ]);
+
+        // Clear caches
+        $this->clearCaches($task);
     }
 
     /**
@@ -110,5 +133,20 @@ class TaskObserver
             'title' => 'Task was unarchived',
             'subtitle' => "\"{$task->name}\" was unarchived by ".auth()->user()->name,
         ]);
+    }
+
+    /**
+     * Clear related caches
+     */
+    private function clearCaches(Task $task): void
+    {
+        Cache::tags(['project', "project:{$task->project_id}"])->flush();
+        Cache::forget("project.{$task->project_id}.stats");
+        Cache::forget("project.{$task->project_id}.tasks");
+
+        if ($task->assigned_to_user_id) {
+            Cache::tags(['user', "user:{$task->assigned_to_user_id}"])->flush();
+            Cache::forget("user.{$task->assigned_to_user_id}.tasks");
+        }
     }
 }
