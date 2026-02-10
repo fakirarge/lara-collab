@@ -13,4 +13,3 @@ return [
     'token' => 'Bu şifre sıfırlama kodu geçersiz.',
     'user' => 'Bu e-posta adresine sahip bir kullanıcı bulamadık.',
 ];
-

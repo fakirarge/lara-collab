@@ -338,4 +338,3 @@ return [
     'have_a_nice_day' => 'İyi Günler',
     'see_you_later' => 'Görüşmek Üzere',
 ];
-

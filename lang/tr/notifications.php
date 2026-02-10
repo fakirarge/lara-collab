@@ -67,4 +67,3 @@ return [
     'months_ago' => ':count ay önce|:count ay önce',
     'years_ago' => ':count yıl önce|:count yıl önce',
 ];
-

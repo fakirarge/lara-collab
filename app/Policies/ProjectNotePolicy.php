@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\ProjectNote;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ProjectNotePolicy
 {
@@ -64,4 +63,3 @@ class ProjectNotePolicy
         return false;
     }
 }
-

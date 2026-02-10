@@ -21,10 +21,9 @@ class ProjectNoteFactory extends Factory
             'created_by' => null,
             'updated_by' => null,
             'title' => $this->faker->sentence(),
-            'content' => '<p>' . $this->faker->paragraph() . '</p>',
+            'content' => '<p>'.$this->faker->paragraph().'</p>',
             'pinned' => $this->faker->boolean(20),
             'order' => 0,
         ];
     }
 }
-

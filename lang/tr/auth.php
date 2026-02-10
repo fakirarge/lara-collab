@@ -34,4 +34,3 @@ return [
     // Logout
     'logout' => 'Çıkış Yap',
 ];
-
