@@ -13,6 +13,7 @@ class ProjectNoteTest extends TestCase
     use RefreshDatabase;
 
     private User $user;
+
     private Project $project;
 
     protected function setUp(): void
@@ -216,4 +217,3 @@ class ProjectNoteTest extends TestCase
         ]);
     }
 }
-

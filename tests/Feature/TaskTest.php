@@ -14,7 +14,9 @@ class TaskTest extends TestCase
     use RefreshDatabase;
 
     private User $user;
+
     private Project $project;
+
     private TaskGroup $taskGroup;
 
     protected function setUp(): void
@@ -165,4 +167,3 @@ class TaskTest extends TestCase
         $this->assertEquals(60 + 120, $timeLogs->sum('minutes'));
     }
 }
-

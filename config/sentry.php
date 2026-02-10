@@ -64,4 +64,3 @@ return [
         'slow_request_threshold' => env('SENTRY_SLOW_REQUEST_THRESHOLD', 1000), // ms
     ],
 ];
-

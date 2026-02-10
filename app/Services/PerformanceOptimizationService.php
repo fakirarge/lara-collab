@@ -18,15 +18,15 @@ class PerformanceOptimizationService
      */
     public function getProjectsOptimized(User $user): Collection
     {
-        return Cache::remember("user.{$user->id}.projects", self::CACHE_TTL, function () use ($user) {
+        return Cache::remember("user.{$user->id}.projects", self::CACHE_TTL, function () {
             return Project::with([
                 'clientCompany:id,name',
                 'users:id,name,email',
                 'taskGroups:id,project_id,name',
             ])
-            ->whereHas('users', fn ($q) => $q->where('user_id', auth()->id()))
-            ->select(['id', 'name', 'description', 'client_company_id', 'created_at', 'updated_at'])
-            ->get();
+                ->whereHas('users', fn ($q) => $q->where('user_id', auth()->id()))
+                ->select(['id', 'name', 'description', 'client_company_id', 'created_at', 'updated_at'])
+                ->get();
         });
     }
 
@@ -51,8 +51,7 @@ class PerformanceOptimizationService
 
                 'recent_activity' => DB::table('activities')
                     ->where('user_id', $user->id)
-                    ->orWhereHas('activityCapable', fn ($q) =>
-                        $q->whereIn('project_id', $user->projects()->pluck('id'))
+                    ->orWhereHas('activityCapable', fn ($q) => $q->whereIn('project_id', $user->projects()->pluck('id'))
                     )
                     ->latest('id')
                     ->limit(20)
@@ -101,7 +100,7 @@ class PerformanceOptimizationService
             ])
             ->select([
                 'id', 'name', 'project_id', 'group_id',
-                'assigned_to_user_id', 'priority_id', 'due_on', 'completed_at'
+                'assigned_to_user_id', 'priority_id', 'due_on', 'completed_at',
             ])
             ->get();
     }
@@ -165,6 +164,7 @@ class PerformanceOptimizationService
         }
 
         $completed = $project->tasks()->whereNotNull('completed_at')->count();
+
         return round(($completed / $total) * 100, 2);
     }
 
@@ -184,4 +184,3 @@ class PerformanceOptimizationService
         Cache::tags(['project', "project:{$project->id}"])->flush();
     }
 }
-

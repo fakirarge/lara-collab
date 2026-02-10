@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\User;
 use App\Services\UserPermissionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -14,9 +14,13 @@ class UserPermissionTest extends TestCase
     use RefreshDatabase;
 
     private User $admin;
+
     private User $targetUser;
+
     private Permission $permission;
+
     private Role $role;
+
     private UserPermissionService $permissionService;
 
     protected function setUp(): void
@@ -278,4 +282,3 @@ class UserPermissionTest extends TestCase
             ->assertStatus(403);
     }
 }
-

@@ -27,4 +27,3 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('projects/{project}/notes/{note}', [ProjectNoteController::class, 'update']);
     Route::delete('projects/{project}/notes/{note}', [ProjectNoteController::class, 'destroy']);
 });
-
