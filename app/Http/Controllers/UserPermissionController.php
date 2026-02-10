@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\User;
 use App\Services\UserPermissionService;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class UserPermissionController extends Controller
 {
-    public function __construct(private UserPermissionService $permissionService)
-    {
-    }
+    public function __construct(private UserPermissionService $permissionService) {}
 
     /**
      * Get all permission overrides for a user
@@ -203,4 +201,3 @@ class UserPermissionController extends Controller
         ]);
     }
 }
-

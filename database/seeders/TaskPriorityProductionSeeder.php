@@ -29,4 +29,3 @@ class TaskPrioritySeeder extends Seeder
         $this->command->info('✅ Task priorities seeded successfully!');
     }
 }
-

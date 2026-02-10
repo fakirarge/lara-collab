@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Task;
 
-use App\Models\Task;
 use App\Models\Project;
+use App\Models\Task;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class TaskHistoryController extends Controller
@@ -64,7 +63,7 @@ class TaskHistoryController extends Controller
                 'event' => 'Time logged',
                 'timestamp' => $log->created_at,
                 'user' => $log->user,
-                'description' => $log->minutes . ' minutes',
+                'description' => $log->minutes.' minutes',
                 'icon' => 'clock',
                 'color' => 'green',
             ]);
@@ -118,19 +117,19 @@ class TaskHistoryController extends Controller
         if (empty($modified)) {
             return [
                 'type' => 'audit',
-                'event' => 'Task ' . $audit->event,
+                'event' => 'Task '.$audit->event,
                 'timestamp' => $audit->created_at,
                 'user' => $audit->user,
-                'description' => 'Task was ' . $audit->event,
+                'description' => 'Task was '.$audit->event,
                 'icon' => $audit->event === 'created' ? 'plus' : 'pencil',
                 'color' => $audit->event === 'created' ? 'green' : 'blue',
             ];
         }
 
         $descriptions = array_map(function ($field, $change) {
-            return $this->formatFieldName($field) . ' changed from "' .
-                   $this->formatValue($field, $change['old']) . '" to "' .
-                   $this->formatValue($field, $change['new']) . '"';
+            return $this->formatFieldName($field).' changed from "'.
+                   $this->formatValue($field, $change['old']).'" to "'.
+                   $this->formatValue($field, $change['new']).'"';
         }, array_keys($modified), array_values($modified));
 
         return [
@@ -190,4 +189,3 @@ class TaskHistoryController extends Controller
         return (string) $value;
     }
 }
-

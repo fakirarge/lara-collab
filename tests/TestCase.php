@@ -20,9 +20,10 @@ abstract class TestCase extends BaseTestCase
     /**
      * Authenticate as a user
      */
-    protected function actingAsUser(User $user = null): self
+    protected function actingAsUser(?User $user = null): self
     {
         $user = $user ?? $this->createTestUser();
+
         return $this->actingAs($user);
     }
 

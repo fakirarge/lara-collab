@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\User;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -13,7 +13,7 @@ class UserPermissionService
     /**
      * Grant a specific permission to a user (override)
      */
-    public function grantPermissionToUser(User $user, Permission $permission, User $grantedBy = null, string $reason = null): void
+    public function grantPermissionToUser(User $user, Permission $permission, ?User $grantedBy = null, ?string $reason = null): void
     {
         DB::table('user_permissions')->updateOrInsert(
             ['user_id' => $user->id, 'permission_id' => $permission->id],
@@ -30,7 +30,7 @@ class UserPermissionService
     /**
      * Revoke a specific permission from a user (deny)
      */
-    public function denyPermissionFromUser(User $user, Permission $permission, User $deniedBy = null, string $reason = null): void
+    public function denyPermissionFromUser(User $user, Permission $permission, ?User $deniedBy = null, ?string $reason = null): void
     {
         DB::table('user_permissions')->updateOrInsert(
             ['user_id' => $user->id, 'permission_id' => $permission->id],
@@ -58,7 +58,7 @@ class UserPermissionService
     /**
      * Assign role to user (optionally scoped to project)
      */
-    public function assignRoleToUser(User $user, Role $role, User $grantedBy = null, ?int $projectId = null, ?string $reason = null, ?\DateTime $expiresAt = null): void
+    public function assignRoleToUser(User $user, Role $role, ?User $grantedBy = null, ?int $projectId = null, ?string $reason = null, ?\DateTime $expiresAt = null): void
     {
         DB::table('user_roles')->updateOrInsert(
             [
@@ -100,7 +100,7 @@ class UserPermissionService
     {
         $permission = Permission::where('name', $permissionName)->first();
 
-        if (!$permission) {
+        if (! $permission) {
             return false;
         }
 
@@ -215,4 +215,3 @@ class UserPermissionService
         cache()->forget("user.{$user->id}.roles");
     }
 }
-
