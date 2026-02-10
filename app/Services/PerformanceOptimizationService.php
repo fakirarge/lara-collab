@@ -173,7 +173,9 @@ class PerformanceOptimizationService
      */
     public function clearUserCache(User $user): void
     {
-        Cache::tags(['user', "user:{$user->id}"])->flush();
+        Cache::forget("user.{$user->id}.tasks");
+        Cache::forget("user.{$user->id}.summary");
+        Cache::forget("user.{$user->id}.permissions");
     }
 
     /**
@@ -181,7 +183,10 @@ class PerformanceOptimizationService
      */
     public function clearProjectCache(Project $project): void
     {
-        Cache::tags(['project', "project:{$project->id}"])->flush();
+        Cache::forget("project.{$project->id}.stats");
+        Cache::forget("project.{$project->id}.tasks");
+        Cache::forget("project.{$project->id}.summary");
+        Cache::forget("project.{$project->id}.members");
     }
 }
 

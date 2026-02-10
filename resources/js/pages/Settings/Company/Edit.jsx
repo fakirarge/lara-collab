@@ -2,6 +2,7 @@ import ActionButton from '@/components/ActionButton';
 import useForm from '@/hooks/useForm';
 import ContainerBox from '@/layouts/ContainerBox';
 import Layout from '@/layouts/MainLayout';
+import { useI18n } from '@/i18n/context';
 import { usePage } from '@inertiajs/react';
 import {
   Box,
@@ -18,6 +19,7 @@ import {
 } from '@mantine/core';
 
 const CompanyEdit = () => {
+  const { t } = useI18n();
   const {
     item,
     dropdowns: { countries, currencies },
@@ -52,7 +54,7 @@ const CompanyEdit = () => {
         mb={35}
       >
         <Grid.Col span='auto'>
-          <Title order={1}>My company</Title>
+          <Title order={1}>{t('company')}</Title>
         </Grid.Col>
         <Grid.Col span='content'></Grid.Col>
       </Grid>
@@ -80,14 +82,14 @@ const CompanyEdit = () => {
                   pt='lg'
                   opacity={0.6}
                 >
-                  Company logo
+                  Şirket logosu
                 </Box>
               )}
             </Grid.Col>
             <Grid.Col span='auto'>
               <FileInput
                 label='Logo'
-                placeholder='Choose image'
+                placeholder='Resim seçin'
                 accept='image/png,image/jpeg'
                 onChange={image => updateValue('logo', image)}
                 clearable
@@ -300,6 +302,6 @@ const CompanyEdit = () => {
   );
 };
 
-CompanyEdit.layout = page => <Layout title='Edit user'>{page}</Layout>;
+CompanyEdit.layout = page => <Layout title='Şirket Bilgileri'>{page}</Layout>;
 
 export default CompanyEdit;

@@ -22,17 +22,19 @@ import {
   IconUser,
 } from '@tabler/icons-react';
 import { usePage, Link } from '@inertiajs/react';
+import { useI18n } from '@/i18n/context';
 import classes from './css/MobileNavigation.module.css';
 
 export default function MobileNavigation() {
+  const { t } = useI18n();
   const [opened, setOpened] = useState(false);
   const { auth, can } = usePage().props;
 
   const menuItems = [
-    { label: 'Dashboard', icon: IconHome, href: 'dashboard' },
-    { label: 'Projects', icon: IconBriefcase, href: 'projects.index' },
-    { label: 'My Work', icon: IconUsers, href: 'my-work.tasks.index' },
-    { label: 'Settings', icon: IconSettings, href: 'settings.profile', permission: 'view settings' },
+    { label: t('dashboard'), icon: IconHome, href: 'dashboard' },
+    { label: t('projects'), icon: IconBriefcase, href: 'projects.index' },
+    { label: t('my_work'), icon: IconUsers, href: 'my-work.tasks.index' },
+    { label: t('settings'), icon: IconSettings, href: 'settings.profile', permission: 'view settings' },
   ];
 
   const filteredItems = menuItems.filter((item) => !item.permission || can(item.permission));
@@ -107,7 +109,7 @@ export default function MobileNavigation() {
             <Group gap="sm" w="100%">
               <IconLogout size={20} />
               <Text size="sm" fw={500}>
-                Logout
+                {t('logout')}
               </Text>
             </Group>
           </Link>

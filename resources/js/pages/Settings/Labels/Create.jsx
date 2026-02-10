@@ -3,10 +3,12 @@ import BackButton from "@/components/BackButton";
 import useForm from "@/hooks/useForm";
 import ContainerBox from "@/layouts/ContainerBox";
 import Layout from "@/layouts/MainLayout";
+import { useI18n } from "@/i18n/context";
 import { redirectTo } from "@/utils/route";
 import { Anchor, Breadcrumbs, ColorInput, Grid, Group, TextInput, Title } from "@mantine/core";
 
 const LabelCreate = () => {
+  const { t } = useI18n();
   const [form, submit, updateValue] = useForm("post", route("settings.labels.store"), {
     name: "",
     color: "",
@@ -16,14 +18,14 @@ const LabelCreate = () => {
     <>
       <Breadcrumbs fz={14} mb={30}>
         <Anchor href="#" onClick={() => redirectTo("settings.labels.index")} fz={14}>
-          Labels
+          {t('labels')}
         </Anchor>
-        <div>Create</div>
+        <div>{t('create')}</div>
       </Breadcrumbs>
 
       <Grid justify="space-between" align="flex-end" gutter="xl" mb="lg">
         <Grid.Col span="auto">
-          <Title order={1}>Create label</Title>
+          <Title order={1}>{t('addLabel')}</Title>
         </Grid.Col>
         <Grid.Col span="content"></Grid.Col>
       </Grid>
@@ -31,16 +33,16 @@ const LabelCreate = () => {
       <ContainerBox maw={400}>
         <form onSubmit={submit}>
           <TextInput
-            label="Name"
-            placeholder="Label name"
+            label={t('name')}
+            placeholder="Etiket adı"
             required
             value={form.data.name}
             onChange={(e) => updateValue("name", e.target.value)}
             error={form.errors.name}
           />
           <ColorInput
-            label="Color"
-            placeholder="Label color"
+            label={t('color')}
+            placeholder="Etiket rengi"
             required
             mt="md"
             swatches={[
@@ -66,7 +68,7 @@ const LabelCreate = () => {
 
           <Group justify="space-between" mt="xl">
             <BackButton route="settings.labels.index" />
-            <ActionButton loading={form.processing}>Create</ActionButton>
+            <ActionButton loading={form.processing}>{t('create')}</ActionButton>
           </Group>
         </form>
       </ContainerBox>
@@ -74,6 +76,6 @@ const LabelCreate = () => {
   );
 };
 
-LabelCreate.layout = (page) => <Layout title="Create label">{page}</Layout>;
+LabelCreate.layout = (page) => <Layout title="Etiket Oluştur">{page}</Layout>;
 
 export default LabelCreate;

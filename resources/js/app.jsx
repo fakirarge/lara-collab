@@ -13,6 +13,8 @@ import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { createRoot } from "react-dom/client";
+import { I18nProvider } from "@/i18n/context";
+import { setLocale } from "@/i18n";
 
 const theme = createTheme({
   primaryColor: "blue",
@@ -40,15 +42,20 @@ createInertiaApp({
   resolve: (name) =>
     resolvePageComponent(`./pages/${name}.jsx`, import.meta.glob("./pages/**/*.jsx")),
   setup({ el, App, props }) {
+    // Türkçe dili ayarla
+    setLocale('tr');
+
     const root = createRoot(el);
 
     root.render(
-      <MantineProvider theme={theme} defaultColorScheme="auto">
-        <Notifications />
-        <ModalsProvider>
-          <App {...props} />
-        </ModalsProvider>
-      </MantineProvider>,
+      <I18nProvider>
+        <MantineProvider theme={theme} defaultColorScheme="auto">
+          <Notifications />
+          <ModalsProvider>
+            <App {...props} />
+          </ModalsProvider>
+        </MantineProvider>
+      </I18nProvider>,
     );
   },
   progress: false,

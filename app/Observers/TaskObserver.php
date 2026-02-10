@@ -140,13 +140,20 @@ class TaskObserver
      */
     private function clearCaches(Task $task): void
     {
-        Cache::tags(['project', "project:{$task->project_id}"])->flush();
+        // Use forget instead of tags for better compatibility
         Cache::forget("project.{$task->project_id}.stats");
         Cache::forget("project.{$task->project_id}.tasks");
+        Cache::forget("project.{$task->project_id}.summary");
 
+        // Clear user task cache if assigned
         if ($task->assigned_to_user_id) {
-            Cache::tags(['user', "user:{$task->assigned_to_user_id}"])->flush();
             Cache::forget("user.{$task->assigned_to_user_id}.tasks");
+            Cache::forget("user.{$task->assigned_to_user_id}.summary");
+        }
+
+        // Clear original user cache
+        if ($task->created_by_user_id) {
+            Cache::forget("user.{$task->created_by_user_id}.tasks");
         }
     }
 }

@@ -2,6 +2,7 @@ import Layout from "@/layouts/MainLayout";
 import { usePage } from "@inertiajs/react";
 import { Title } from "@mantine/core";
 import Masonry from "react-masonry-css";
+import { useI18n } from "@/i18n/context";
 import OverdueTasks from "./Cards/OverdueTasks";
 import { ProjectCard } from "./Cards/ProjectCard";
 import RecentComments from "./Cards/RecentComments";
@@ -9,6 +10,7 @@ import RecentlyAssignedTasks from "./Cards/RecentlyAssignedTasks";
 import classes from "./css/Index.module.css";
 
 const Dashboard = () => {
+  const { t } = useI18n();
   const { projects, overdueTasks, recentlyAssignedTasks, recentComments } = usePage().props;
 
   const breakpointColumns = {
@@ -19,7 +21,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <Title mb="xl">Dashboard</Title>
+      <Title mb="xl">{t('dashboard')}</Title>
       <Masonry
         breakpointCols={breakpointColumns}
         className={classes.myMasonryGrid}

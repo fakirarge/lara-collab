@@ -3,6 +3,7 @@ import SearchInput from '@/components/SearchInput';
 import TableHead from '@/components/TableHead';
 import TableRowEmpty from '@/components/TableRowEmpty';
 import Layout from '@/layouts/MainLayout';
+import { useI18n } from '@/i18n/context';
 import { redirectTo, reloadWithQuery } from '@/utils/route';
 import { actionColumnVisibility, prepareColumns } from '@/utils/table';
 import { usePage } from '@inertiajs/react';
@@ -11,14 +12,15 @@ import { IconPlus } from '@tabler/icons-react';
 import TableRow from './TableRow';
 
 const PrioritiesIndex = () => {
+  const { t } = useI18n();
   const { items } = usePage().props;
 
   const columns = prepareColumns([
-    { label: 'Color', sortable: false },
-    { label: 'Label', sortable: false },
-    { label: 'Order', sortable: false },
+    { label: t('color'), sortable: false },
+    { label: t('name'), sortable: false },
+    { label: t('order'), sortable: false },
     {
-      label: 'Actions',
+      label: t('actions'),
       sortable: false,
       visible: actionColumnVisibility('task priority'),
     },
@@ -66,6 +68,6 @@ const PrioritiesIndex = () => {
   );
 };
 
-PrioritiesIndex.layout = page => <Layout title='Task Priorities'>{page}</Layout>;
+PrioritiesIndex.layout = page => <Layout title="Öncelikler">{page}</Layout>;
 
 export default PrioritiesIndex;

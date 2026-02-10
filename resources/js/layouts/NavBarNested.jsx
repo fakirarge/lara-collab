@@ -2,6 +2,7 @@ import Logo from "@/components/Logo";
 import useNavigationStore from "@/hooks/store/useNavigationStore";
 import { usePage } from "@inertiajs/react";
 import { Group, ScrollArea, Text, rem } from "@mantine/core";
+import { useI18n } from "@/i18n/context";
 import {
   IconBuildingSkyscraper,
   IconFileDollar,
@@ -18,40 +19,41 @@ import UserButton from "./UserButton";
 import classes from "./css/NavBarNested.module.css";
 
 export default function Sidebar() {
+  const { t } = useI18n();
   const { version } = usePage().props;
   const { items, setItems } = useNavigationStore();
 
   useEffect(() => {
     setItems([
       {
-        label: "Dashboard",
+        label: t('dashboard'),
         icon: IconGauge,
         link: route("dashboard"),
         active: route().current("dashboard"),
         visible: true,
       },
       {
-        label: "Projects",
+        label: t('projects'),
         icon: IconListDetails,
         link: route("projects.index"),
         active: route().current("projects.*"),
         visible: can("view projects"),
       },
       {
-        label: "My Work",
+        label: t('my_work'),
         icon: IconLayoutList,
         active: route().current("my-work.*"),
         opened: route().current("my-work.*"),
         visible: can("view tasks") || can("view activities"),
         links: [
           {
-            label: "Tasks",
+            label: t('tasks'),
             link: route("my-work.tasks.index"),
             active: route().current("my-work.tasks.*"),
             visible: can("view tasks"),
           },
           {
-            label: "Activity",
+            label: t('activity'),
             link: route("my-work.activity.index"),
             active: route().current("my-work.activity.*"),
             visible: can("view activities"),
@@ -59,39 +61,39 @@ export default function Sidebar() {
         ],
       },
       {
-        label: "Users",
+        label: t('users'),
         icon: IconUsers,
         link: route("users.index"),
         active: route().current("users.*"),
         visible: can("view users"),
       },
       {
-        label: "Settings",
+        label: t('settings'),
         icon: IconSettings,
         active: route().current("settings.*"),
         opened: route().current("settings.*"),
         visible: can("view owner company") || can("view roles") || can("view labels") || can("view task priority"),
         links: [
           {
-            label: "Company",
+            label: t('company'),
             link: route("settings.company.edit"),
             active: route().current("settings.company.*"),
             visible: can("view owner company"),
           },
           {
-            label: "Roles",
+            label: t('roles'),
             link: route("settings.roles.index"),
             active: route().current("settings.roles.*"),
             visible: can("view roles"),
           },
           {
-            label: "Labels",
+            label: t('labels'),
             link: route("settings.labels.index"),
             active: route().current("settings.labels.*"),
             visible: can("view labels"),
           },
           {
-            label: "Priorities",
+            label: t('priority'),
             link: route("settings.task-priorities.index"),
             active: route().current("settings.task-priorities.*"),
             visible: can("view task priority"),

@@ -3,6 +3,7 @@ import BackButton from '@/components/BackButton';
 import useForm from '@/hooks/useForm';
 import ContainerBox from '@/layouts/ContainerBox';
 import Layout from '@/layouts/MainLayout';
+import { useI18n } from '@/i18n/context';
 import { redirectTo } from '@/utils/route';
 import {
   Anchor,
@@ -16,6 +17,7 @@ import {
 } from '@mantine/core';
 
 const PriorityCreate = () => {
+  const { t } = useI18n();
   const [form, submit, updateValue] = useForm('post', route('settings.task-priorities.store'), {
     label: '',
     color: '',
@@ -26,14 +28,14 @@ const PriorityCreate = () => {
     <>
       <Breadcrumbs fz={14} mb={30}>
         <Anchor href='#' onClick={() => redirectTo('settings.task-priorities.index')} fz={14}>
-          Priorities
+          {t('priority')}
         </Anchor>
-        <div>Create</div>
+        <div>{t('create')}</div>
       </Breadcrumbs>
 
       <Grid justify='space-between' align='flex-end' gutter='xl' mb='lg'>
         <Grid.Col span='auto'>
-          <Title order={1}>Create priority</Title>
+          <Title order={1}>{t('createPriority')}</Title>
         </Grid.Col>
         <Grid.Col span='content'></Grid.Col>
       </Grid>
@@ -41,8 +43,8 @@ const PriorityCreate = () => {
       <ContainerBox maw={400}>
         <form onSubmit={submit}>
           <TextInput
-            label='Label'
-            placeholder='Priority label'
+            label={t('name')}
+            placeholder="Öncelik adı"
             required
             value={form.data.label}
             onChange={e => updateValue('label', e.target.value)}
@@ -50,8 +52,8 @@ const PriorityCreate = () => {
           />
 
           <ColorInput
-            label='Color'
-            placeholder='Priority color'
+            label={t('color')}
+            placeholder="Öncelik rengi"
             required
             mt='md'
             swatches={[
@@ -76,8 +78,8 @@ const PriorityCreate = () => {
           />
 
           <NumberInput
-            label='Order'
-            placeholder='Display order (e.g., 1, 2, 3)'
+            label={t('order')}
+            placeholder='Gösterim sırası (örn: 1, 2, 3)'
             required
             mt='md'
             min={1}
@@ -88,7 +90,7 @@ const PriorityCreate = () => {
 
           <Group justify='space-between' mt='xl'>
             <BackButton route='settings.task-priorities.index' />
-            <ActionButton loading={form.processing}>Create</ActionButton>
+            <ActionButton loading={form.processing}>{t('create')}</ActionButton>
           </Group>
         </form>
       </ContainerBox>
@@ -96,6 +98,6 @@ const PriorityCreate = () => {
   );
 };
 
-PriorityCreate.layout = page => <Layout title='Create priority'>{page}</Layout>;
+PriorityCreate.layout = page => <Layout title='Öncelik Oluştur'>{page}</Layout>;
 
 export default PriorityCreate;

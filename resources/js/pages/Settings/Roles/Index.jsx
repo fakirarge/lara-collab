@@ -4,6 +4,7 @@ import SearchInput from "@/components/SearchInput";
 import TableHead from "@/components/TableHead";
 import TableRowEmpty from "@/components/TableRowEmpty";
 import Layout from "@/layouts/MainLayout";
+import { useI18n } from "@/i18n/context";
 import { redirectTo, reloadWithQuery } from "@/utils/route";
 import { actionColumnVisibility, prepareColumns } from "@/utils/table";
 import { usePage } from "@inertiajs/react";
@@ -12,13 +13,14 @@ import { IconPlus } from "@tabler/icons-react";
 import TableRow from "./TableRow";
 
 const RolesIndex = () => {
+  const { t } = useI18n();
   const { items } = usePage().props;
 
   const columns = prepareColumns([
-    { label: "Name", column: "name" },
-    { label: "Permissions count", sortable: false },
+    { label: t('name'), column: "name" },
+    { label: t('permissions'), sortable: false },
     {
-      label: "Actions",
+      label: t('actions'),
       sortable: false,
       visible: actionColumnVisibility("role"),
     },
@@ -70,6 +72,6 @@ const RolesIndex = () => {
   );
 };
 
-RolesIndex.layout = (page) => <Layout title="Roles">{page}</Layout>;
+RolesIndex.layout = (page) => <Layout title="Roller">{page}</Layout>;
 
 export default RolesIndex;

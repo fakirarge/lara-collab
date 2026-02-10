@@ -3,6 +3,7 @@ import BackButton from "@/components/BackButton";
 import useForm from "@/hooks/useForm";
 import ContainerBox from "@/layouts/ContainerBox";
 import Layout from "@/layouts/MainLayout";
+import { useI18n } from "@/i18n/context";
 import { redirectTo } from "@/utils/route";
 import { usePage } from "@inertiajs/react";
 import {
@@ -17,6 +18,7 @@ import {
 } from "@mantine/core";
 
 const RoleCreate = () => {
+  const { t } = useI18n();
   const { allPermissionsGrouped } = usePage().props;
 
   const [form, submit, updateValue] = useForm(
@@ -45,14 +47,14 @@ const RoleCreate = () => {
           onClick={() => redirectTo("settings.roles.index")}
           fz={14}
         >
-          Roles
+          {t('roles')}
         </Anchor>
-        <div>Create</div>
+        <div>{t('create')}</div>
       </Breadcrumbs>
 
       <Grid justify="space-between" align="flex-end" gutter="xl" mb="lg">
         <Grid.Col span="auto">
-          <Title order={1}>Create role</Title>
+          <Title order={1}>{t('createRole')}</Title>
         </Grid.Col>
         <Grid.Col span="content"></Grid.Col>
       </Grid>
@@ -60,8 +62,8 @@ const RoleCreate = () => {
       <ContainerBox maw={700}>
         <form onSubmit={submit}>
           <TextInput
-            label="Name"
-            placeholder="Role name"
+            label={t('name')}
+            placeholder="Rol adı"
             required
             value={form.data.name}
             onChange={(e) => updateValue("name", e.target.value)}
@@ -69,7 +71,7 @@ const RoleCreate = () => {
           />
 
           <Title order={3} mt="xl">
-            Permissions
+            {t('permissions')}
           </Title>
 
           {Object.keys(allPermissionsGrouped).map((group) => (
@@ -93,7 +95,7 @@ const RoleCreate = () => {
 
           <Group justify="space-between" mt="xl">
             <BackButton route="settings.roles.index" />
-            <ActionButton loading={form.processing}>Create</ActionButton>
+            <ActionButton loading={form.processing}>{t('create')}</ActionButton>
           </Group>
         </form>
       </ContainerBox>
@@ -101,6 +103,6 @@ const RoleCreate = () => {
   );
 };
 
-RoleCreate.layout = (page) => <Layout title="Create role">{page}</Layout>;
+RoleCreate.layout = (page) => <Layout title="Rol Oluştur">{page}</Layout>;
 
 export default RoleCreate;
